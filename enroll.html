@@ -249,11 +249,16 @@
 
                     <div class="form-success" id="formSuccess">
                         <div class="success-icon">OK</div>
-                        <h3>Your email client is opening.</h3>
-                        <p>Just hit <strong>Send</strong> in your mail app to submit your application. We'll reply within 48 hours.</p>
+                        <h3>Application submitted!</h3>
+                        <p>We've received your application and will reply within 48 hours.</p>
                     </div>
 
-                    <form id="enrollForm" onsubmit="return submitEnroll(event)">
+                    <form id="enrollForm" action="https://formsubmit.co/dhruvhydrox@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="Basecamp Application — New Student">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="text" name="_honey" style="display:none">
+                        <input type="hidden" name="_next" id="formNext">
                         <div class="form-row two">
                             <div class="field">
                                 <label>Student's name <span class="req">*</span></label>
@@ -357,44 +362,29 @@
     </footer>
 
     <script>
-    /* INTAKE FORM → mailto: dhruvhydrox@gmail.com */
-    function submitEnroll(e) {
+    /* INTAKE FORM → FormSubmit.co → dhruvhydrox@gmail.com */
+    document.getElementById('formNext').value = window.location.href;
+    document.getElementById('enrollForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const f = e.target;
-        const d = new FormData(f);
-        const lines = [
-            'BASECAMP ENROLLMENT APPLICATION',
-            '═══════════════════════════════════',
-            '',
-            'STUDENT',
-            '  Name:        ' + (d.get('studentName') || ''),
-            '  Age:         ' + (d.get('studentAge') || ''),
-            '',
-            'PARENT / GUARDIAN',
-            '  Name:        ' + (d.get('parentName') || ''),
-            '  Email:       ' + (d.get('parentEmail') || ''),
-            '  Phone:       ' + (d.get('parentPhone') || '(not provided)'),
-            '',
-            'PROGRAM',
-            '  Track:       ' + (d.get('track') || 'Not sure'),
-            '  Experience:  ' + (d.get('experience') || ''),
-            '',
-            'WHY INTERESTED',
-            (d.get('why') || '(not provided)'),
-            '',
-            'ADDITIONAL NOTES',
-            (d.get('notes') || '(none)'),
-            '',
-            '═══════════════════════════════════',
-            'Submitted from basecamp.example/enroll',
-        ];
-        const body = lines.join('\n');
-        const subject = 'Basecamp Application — ' + (d.get('studentName') || 'New Student');
-        const mailto = 'mailto:dhruvhydrox@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        window.location.href = mailto;
-        document.getElementById('formSuccess').classList.add('show');
-        return false;
-    }
+        const f = this;
+        const btn = f.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+        // Set dynamic subject
+        const name = f.querySelector('[name="studentName"]').value || 'New Student';
+        f.querySelector('[name="_subject"]').value = 'Basecamp Application — ' + name;
+        fetch(f.action, { method: 'POST', body: new FormData(f) })
+            .then(r => { if (!r.ok) throw new Error(); return r; })
+            .then(() => {
+                f.style.display = 'none';
+                document.getElementById('formSuccess').classList.add('show');
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Submit application →';
+                alert('Something went wrong. Please try again.');
+            });
+    });
 
     /* FAQ */
     document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
