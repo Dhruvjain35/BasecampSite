@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Brick body -->
+  <rect x="4" y="16" width="56" height="42" rx="5" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3"/>
+  <!-- Top studs -->
+  <rect x="14" y="8" width="12" height="10" rx="3" fill="#ef3e36" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="38" y="8" width="12" height="10" rx="3" fill="#ef3e36" stroke="#1a1a1a" stroke-width="2.5"/>
+  <!-- Letter B -->
+  <text x="32" y="47" font-family="'Arial Black', 'Helvetica Neue', sans-serif" font-size="30" font-weight="900" text-anchor="middle" fill="#fff7e0" letter-spacing="-1">B</text>
+</svg>
