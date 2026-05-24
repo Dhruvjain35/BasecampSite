@@ -142,6 +142,29 @@
         .reveal.in { animation: brickSnap 0.55s cubic-bezier(0.22, 1.4, 0.36, 1) forwards; }
         .reveal.d1 { animation-delay: 0.1s; } .reveal.d2 { animation-delay: 0.2s; } .reveal.d3 { animation-delay: 0.3s; }
         @keyframes brickSnap { 0% { opacity: 0; transform: translateY(40px) rotate(2.5deg) scale(0.92); filter: blur(2px); } 60% { opacity: 1; transform: translateY(-4px) rotate(-0.5deg) scale(1.01); filter: blur(0); } 80% { transform: translateY(2px) rotate(0.2deg) scale(0.995); } 100% { opacity: 1; transform: none; filter: blur(0); } }
+
+        /* MOBILE NAV */
+        .nav-burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 200; background: none; border: none; }
+        .nav-burger span { display: block; width: 24px; height: 2.5px; background: var(--ink); border-radius: 2px; transition: all 0.25s; }
+        @media (min-width: 768px) { .nav-burger { display: none; } }
+        .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: var(--cream); z-index: 150; align-items: center; justify-content: center; gap: 12px; padding: 80px 24px; }
+        .nav-links.open a { font-size: 22px; padding: 14px 28px; }
+        .nav-close { display: none; position: fixed; top: 20px; right: 24px; z-index: 200; font-size: 32px; background: none; border: none; cursor: pointer; font-family: var(--display); font-weight: 700; color: var(--ink); }
+        .nav-links.open ~ .nav-close { display: block; }
+
+        /* MOBILE TYPOGRAPHY */
+        @media (max-width: 767px) {
+            .page-hero { padding: 40px 0 24px; }
+            .page-hero p { font-size: 16px; }
+            .section { padding: 40px 0; }
+            .section-header { margin-bottom: 28px; }
+            .section-title { font-size: 28px; }
+            .section-desc { font-size: 15px; }
+            .cta { padding: 50px 16px; }
+            .cta-card { padding: 36px 20px; }
+            .cta-card p { font-size: 15px; }
+            .footer-inner { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -159,12 +182,13 @@
     <nav class="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo"><span class="logo-block"></span>Basecamp</a>
+            <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
             <div class="nav-links">
                 <a href="program.html">Program</a>
                 <a href="curriculum.html">Curriculum</a>
                 <a href="team.html">Team</a>
                 <a href="enroll.html" class="nav-cta active">Enroll</a>
-            </div>
+            <button class="nav-close" onclick="document.querySelector('.nav-links').classList.remove('open')">&times;</button>
         </div>
     </nav>
 
@@ -347,7 +371,7 @@
                 <div class="faq-item reveal"><button class="faq-q" type="button">When does the cohort start?<span class="faq-icon">+</span></button><div class="faq-a">Summer 2026 cohort starts <strong>June 20, 2026</strong>. Two sessions per week, two hours each, for six weeks straight.</div></div>
                 <div class="faq-item reveal"><button class="faq-q" type="button">Where are sessions held?<span class="faq-icon">+</span></button><div class="faq-a">In-person in Frisco, TX. Exact venue confirmed once the cohort fills.</div></div>
                 <div class="faq-item reveal"><button class="faq-q" type="button">What happens after?<span class="faq-icon">+</span></button><div class="faq-a">Your kid keeps everything: the deployed app, GitHub repo, and the code. Plus access to the alumni community for help and connections later.</div></div>
-                <div class="faq-item reveal"><button class="faq-q" type="button">Refund policy?<span class="faq-icon">+</span></button><div class="faq-a">Full refund up to one week before start. Prorated after. If it isn't working, tell us and we'll fix it.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">Refund policy?<span class="faq-icon">+</span></button><div class="faq-a">All sales are final. No refunds once payment is processed.</div></div>
             </div>
         </div>
     </section>

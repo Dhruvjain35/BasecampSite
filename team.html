@@ -71,7 +71,8 @@
 
         /* FOUNDERS */
         .founders-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
-        @media (min-width: 900px) { .founders-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 768px) { .founders-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1100px) { .founders-grid { grid-template-columns: repeat(4, 1fr); } }
         .founder { background: var(--paper); border: 3px solid var(--ink); border-radius: 22px; padding: 36px 28px; position: relative; box-shadow: 0 8px 0 var(--ink); transition: all 0.15s; }
         .founder:hover { transform: translateY(-3px); box-shadow: 0 11px 0 var(--ink); }
         .founder-studs { display: flex; gap: 10px; position: absolute; top: -10px; left: 28px; }
@@ -80,9 +81,16 @@
         .founder.y .founder-avatar { background: var(--yellow); }
         .founder.b .founder-avatar { background: var(--blue); color: white; }
         .founder.g .founder-avatar { background: var(--green); }
+        .founder.p .founder-avatar { background: var(--purple); color: white; }
         .founder-name { font-family: var(--display); font-size: 24px; font-weight: 700; margin-bottom: 4px; }
         .founder-role { font-family: var(--display); font-size: 13px; opacity: 0.65; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-        .founder-bio { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+        .founder-bio { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 14px; }
+        .founder-creds { list-style: none; padding: 0; margin: 0; }
+        .founder-creds li { font-size: 13px; line-height: 1.5; color: var(--ink-soft); padding: 5px 0; border-top: 1.5px solid rgba(26,26,26,0.08); position: relative; padding-left: 14px; }
+        .founder-creds li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 2px; background: var(--yellow); border: 1.5px solid var(--ink); }
+        .founder.b .founder-creds li::before { background: var(--blue); }
+        .founder.g .founder-creds li::before { background: var(--green); }
+        .founder.p .founder-creds li::before { background: var(--purple); }
 
         /* VALUES */
         .values-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
@@ -113,6 +121,29 @@
         .reveal.in { animation: brickSnap 0.55s cubic-bezier(0.22, 1.4, 0.36, 1) forwards; }
         .reveal.d1 { animation-delay: 0.1s; } .reveal.d2 { animation-delay: 0.2s; } .reveal.d3 { animation-delay: 0.3s; }
         @keyframes brickSnap { 0% { opacity: 0; transform: translateY(40px) rotate(2.5deg) scale(0.92); filter: blur(2px); } 60% { opacity: 1; transform: translateY(-4px) rotate(-0.5deg) scale(1.01); filter: blur(0); } 80% { transform: translateY(2px) rotate(0.2deg) scale(0.995); } 100% { opacity: 1; transform: none; filter: blur(0); } }
+
+        /* MOBILE NAV */
+        .nav-burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 200; background: none; border: none; }
+        .nav-burger span { display: block; width: 24px; height: 2.5px; background: var(--ink); border-radius: 2px; transition: all 0.25s; }
+        @media (min-width: 768px) { .nav-burger { display: none; } }
+        .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: var(--cream); z-index: 150; align-items: center; justify-content: center; gap: 12px; padding: 80px 24px; }
+        .nav-links.open a { font-size: 22px; padding: 14px 28px; }
+        .nav-close { display: none; position: fixed; top: 20px; right: 24px; z-index: 200; font-size: 32px; background: none; border: none; cursor: pointer; font-family: var(--display); font-weight: 700; color: var(--ink); }
+        .nav-links.open ~ .nav-close { display: block; }
+
+        /* MOBILE TYPOGRAPHY */
+        @media (max-width: 767px) {
+            .page-hero { padding: 40px 0 24px; }
+            .page-hero p { font-size: 16px; }
+            .section { padding: 40px 0; }
+            .section-header { margin-bottom: 28px; }
+            .section-title { font-size: 28px; }
+            .section-desc { font-size: 15px; }
+            .cta { padding: 50px 16px; }
+            .cta-card { padding: 36px 20px; }
+            .cta-card p { font-size: 15px; }
+            .footer-inner { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -130,12 +161,13 @@
     <nav class="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo"><span class="logo-block"></span>Basecamp</a>
+            <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
             <div class="nav-links">
                 <a href="program.html">Program</a>
                 <a href="curriculum.html">Curriculum</a>
                 <a href="team.html" class="active">Team</a>
                 <a href="enroll.html" class="nav-cta">Enroll</a>
-            </div>
+            <button class="nav-close" onclick="document.querySelector('.nav-links').classList.remove('open')">&times;</button>
         </div>
     </nav>
 
@@ -161,29 +193,61 @@
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-eyebrow y">Founders</span>
-                <h2 class="section-title">Three students.</h2>
+                <h2 class="section-title">The team.</h2>
             </div>
             <div class="founders-grid">
                 <div class="founder y reveal">
                     <div class="founder-studs"><span></span><span></span><span></span></div>
-                    <div class="founder-avatar">DJ</div>
-                    <p class="founder-name">Dhruv Jain</p>
-                    <p class="founder-role">Co-Founder · Curriculum</p>
-                    <p class="founder-bio">AI researcher in computational chemistry and ML. Publishes work in molecular modeling. Designs what students actually build.</p>
-                </div>
-                <div class="founder b reveal d1">
-                    <div class="founder-studs"><span></span><span></span><span></span></div>
                     <div class="founder-avatar">MH</div>
                     <p class="founder-name">Mustafa Hameed</p>
                     <p class="founder-role">Co-Founder · Tech</p>
-                    <p class="founder-bio">Full-stack engineer. Builds the pipeline that lets kids deploy with one command. Leads technical mentorship.</p>
+                    <p class="founder-bio">Full-stack builder and AI educator.</p>
+                    <ul class="founder-creds">
+                        <li>Shipped AI education app serving 10,000+ users</li>
+                        <li>2 additional apps, ~500 users within 2 weeks of launch</li>
+                        <li>700K+ social media views on AI education in 3 months</li>
+                        <li>Partnered with 5+ schools globally for AI programs</li>
+                        <li>Received VC investment offers for tech startups</li>
+                    </ul>
                 </div>
-                <div class="founder g reveal d2">
+                <div class="founder b reveal d1">
                     <div class="founder-studs"><span></span><span></span><span></span></div>
                     <div class="founder-avatar">SB</div>
                     <p class="founder-name">Sriyan Bodla</p>
                     <p class="founder-role">Co-Founder · Ops</p>
-                    <p class="founder-bio">Competitive programmer. Algorithms, data structures, systems. Runs day-to-day program ops and the student experience.</p>
+                    <p class="founder-bio">EdTech and MedTech founder.</p>
+                    <ul class="founder-creds">
+                        <li>Shipped EdTech platform in 2 months — pilot with FISD, ~700 active users</li>
+                        <li>Shipped MedTech platform with AWS BAA compliance</li>
+                        <li>Onboarding with AMA + North Texas doctor board</li>
+                        <li>Accepted into TechFW startup accelerator (full ride) + angel investment offers</li>
+                        <li>Attended Anthropic's Silicon Valley conference on Claude</li>
+                    </ul>
+                </div>
+                <div class="founder g reveal d2">
+                    <div class="founder-studs"><span></span><span></span><span></span></div>
+                    <div class="founder-avatar">DJ</div>
+                    <p class="founder-name">Dhruv Jain</p>
+                    <p class="founder-role">Co-Founder · Curriculum</p>
+                    <p class="founder-bio">AI engineer and quantum computing researcher.</p>
+                    <ul class="founder-creds">
+                        <li>3x AI hackathon winner / finalist</li>
+                        <li>Shipped agentic AI workflows for T-Mobile x Databricks (F500)</li>
+                        <li>Co-built MedTech platform — AWS BAA, AMA onboarding, TechFW accelerator</li>
+                        <li>Researching AI for quantum simulations (Cavity QED) with Notre Dame PhD researchers</li>
+                        <li>Presenting at UC Berkeley + Nvidia conference</li>
+                    </ul>
+                </div>
+                <div class="founder p reveal d3">
+                    <div class="founder-studs"><span></span><span></span><span></span></div>
+                    <div class="founder-avatar">AM</div>
+                    <p class="founder-name">Aarya Mani</p>
+                    <p class="founder-role">Co-Founder · Education</p>
+                    <p class="founder-bio">Experienced educator and school owner.</p>
+                    <ul class="founder-creds">
+                        <li>Owner of N4 Stacy Montessori</li>
+                        <li>Hands-on experience teaching and mentoring young learners</li>
+                    </ul>
                 </div>
             </div>
         </div>
