@@ -363,28 +363,17 @@
 
     <script>
     /* INTAKE FORM → FormSubmit.co → dhruvhydrox@gmail.com */
-    document.getElementById('formNext').value = window.location.href;
-    document.getElementById('enrollForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const f = this;
-        const btn = f.querySelector('button[type="submit"]');
-        btn.disabled = true;
-        btn.textContent = 'Submitting...';
-        // Set dynamic subject
-        const name = f.querySelector('[name="studentName"]').value || 'New Student';
-        f.querySelector('[name="_subject"]').value = 'Basecamp Application — ' + name;
-        fetch(f.action, { method: 'POST', body: new FormData(f) })
-            .then(r => { if (!r.ok) throw new Error(); return r; })
-            .then(() => {
-                f.style.display = 'none';
-                document.getElementById('formSuccess').classList.add('show');
-            })
-            .catch(() => {
-                btn.disabled = false;
-                btn.textContent = 'Submit application →';
-                alert('Something went wrong. Please try again.');
-            });
+    document.getElementById('formNext').value = window.location.href + '?submitted=true';
+    // Update subject dynamically before submit
+    document.getElementById('enrollForm').addEventListener('submit', function() {
+        const name = this.querySelector('[name="studentName"]').value || 'New Student';
+        this.querySelector('[name="_subject"]').value = 'Basecamp Application — ' + name;
     });
+    // Show success if redirected back after submission
+    if (window.location.search.includes('submitted=true')) {
+        document.getElementById('enrollForm').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+    }
 
     /* FAQ */
     document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
