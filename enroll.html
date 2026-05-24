@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll · Basecamp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --cream: #fff7e0; --cream-2: #ffeec0; --paper: #ffffff; --yellow: #ffd23f; --red: #ef3e36; --blue: #4a90e2; --green: #58c93c; --purple: #b06ce6; --ink: #1a1a1a; --ink-soft: #3a3a3a; --display: 'Fredoka', system-ui, sans-serif; --body: 'Nunito', system-ui, sans-serif; }
+        html { -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--body); background: var(--cream); color: var(--ink); line-height: 1.55; overflow-x: hidden; min-height: 100vh; position: relative; }
+        body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle at 20px 20px, rgba(26,26,26,0.06) 5px, transparent 6px); background-size: 44px 44px; pointer-events: none; z-index: 0; }
+        a { text-decoration: none; color: inherit; }
+
+        /* FALLING BRICKS */
+        .brick-rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .fall { position: absolute; top: -120px; animation: fall linear infinite; opacity: 0.55; }
+        @keyframes fall {
+            from { transform: translateY(-15vh) rotate(var(--rot, 0deg)); }
+            to { transform: translateY(115vh) rotate(calc(var(--rot, 0deg) + 240deg)); }
+        }
+        .fall-1 { left: 4%; animation-duration: 18s; animation-delay: 0s; --rot: 12deg; }
+        .fall-2 { left: 18%; animation-duration: 22s; animation-delay: -4s; --rot: -10deg; }
+        .fall-3 { left: 32%; animation-duration: 16s; animation-delay: -9s; --rot: 20deg; }
+        .fall-4 { left: 48%; animation-duration: 24s; animation-delay: -2s; --rot: -18deg; }
+        .fall-5 { left: 64%; animation-duration: 19s; animation-delay: -13s; --rot: 8deg; }
+        .fall-6 { left: 78%; animation-duration: 21s; animation-delay: -6s; --rot: -12deg; }
+        .fall-7 { left: 91%; animation-duration: 17s; animation-delay: -15s; --rot: 16deg; }
+
+        .nav { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: 3px solid var(--ink); }
+        .nav-inner { max-width: 1180px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-family: var(--display); font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .logo-block { width: 28px; height: 28px; background: var(--red); border: 2.5px solid var(--ink); border-radius: 6px; position: relative; }
+        .logo-block::before, .logo-block::after { content: ''; position: absolute; top: -5px; width: 7px; height: 7px; border-radius: 50%; background: var(--red); border: 2px solid var(--ink); }
+        .logo-block::before { left: 4px; } .logo-block::after { right: 4px; }
+        .nav-links { display: none; gap: 8px; align-items: center; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .nav-links a { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--ink); padding: 8px 16px; border-radius: 10px; transition: background 0.15s; }
+        .nav-links a:hover, .nav-links a.active { background: var(--cream-2); }
+        .nav-cta { background: var(--yellow) !important; border: 2.5px solid var(--ink); box-shadow: 0 3px 0 var(--ink); padding: 8px 18px !important; transition: all 0.12s !important; }
+        .nav-cta:hover { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink) !important; background: var(--yellow) !important; }
+
+        .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        .page-hero { padding: 70px 0 40px; text-align: center; position: relative; z-index: 1; }
+        .page-hero .tag { display: inline-flex; align-items: center; gap: 8px; background: var(--green); border: 2.5px solid var(--ink); border-radius: 999px; padding: 5px 14px; font-family: var(--display); font-weight: 600; font-size: 12px; margin-bottom: 18px; box-shadow: 0 3px 0 var(--ink); }
+        .page-hero .tag .pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); animation: pulse 1.6s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .page-hero h1 { font-family: var(--display); font-size: clamp(40px, 7vw, 76px); font-weight: 700; line-height: 1; margin-bottom: 18px; letter-spacing: -0.01em; }
+        .page-hero h1 .pop { background: var(--yellow); padding: 0 12px; border-radius: 14px; box-shadow: 0 4px 0 var(--ink); display: inline-block; border: 3px solid var(--ink); transform: rotate(-2deg); }
+        .page-hero p { font-size: 19px; max-width: 600px; margin: 0 auto; color: var(--ink-soft); font-weight: 500; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 26px; font-family: var(--display); font-size: 16px; font-weight: 600; border: 2.5px solid var(--ink); border-radius: 14px; cursor: pointer; transition: all 0.12s; text-decoration: none; }
+        .btn-yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+        .btn-yellow:hover { transform: translateY(3px); box-shadow: 0 3px 0 var(--ink); }
+        .btn-yellow:active { transform: translateY(6px); box-shadow: 0 0 0 var(--ink); }
+        .btn-white { background: var(--paper); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+        .btn-white:hover { transform: translateY(3px); box-shadow: 0 3px 0 var(--ink); }
+        .btn-large { padding: 18px 36px; font-size: 18px; border-radius: 16px; }
+
+        .section { padding: 70px 0; position: relative; z-index: 1; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-eyebrow { display: inline-block; background: var(--paper); border: 2.5px solid var(--ink); border-radius: 999px; padding: 5px 14px; font-family: var(--display); font-weight: 600; font-size: 12px; margin-bottom: 14px; box-shadow: 0 3px 0 var(--ink); }
+        .section-eyebrow.y { background: var(--yellow); } .section-eyebrow.b { background: var(--blue); color: white; } .section-eyebrow.g { background: var(--green); } .section-eyebrow.r { background: var(--red); color: white; } .section-eyebrow.p { background: var(--purple); color: white; }
+        .section-title { font-family: var(--display); font-size: clamp(30px, 5vw, 48px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.05; margin-bottom: 14px; }
+        .section-desc { font-size: 17px; color: var(--ink-soft); max-width: 560px; margin: 0 auto; }
+
+        /* PRICING */
+        .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 800px; margin: 0 auto; }
+        @media (min-width: 768px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+        .price-card { background: var(--paper); border: 3px solid var(--ink); border-radius: 22px; padding: 36px 30px; position: relative; box-shadow: 0 8px 0 var(--ink); transition: all 0.15s; }
+        .price-card:hover { transform: translateY(-3px); box-shadow: 0 11px 0 var(--ink); }
+        .price-card.featured { background: var(--yellow); }
+        .price-studs { display: flex; gap: 10px; position: absolute; top: -10px; left: 28px; }
+        .price-studs span { width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); }
+        .price-card.featured .price-studs span { background: var(--yellow); }
+        .price-tag { font-family: var(--display); font-weight: 600; font-size: 12px; opacity: 0.7; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .price-badge { display: inline-block; background: var(--red); color: white; border: 2px solid var(--ink); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; margin-left: 8px; box-shadow: 0 2px 0 var(--ink); }
+        .price-amt { font-family: var(--display); font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+        .price-per { font-size: 14px; opacity: 0.7; margin-bottom: 26px; font-weight: 600; }
+        .price-card ul { list-style: none; }
+        .price-card li { font-size: 15px; padding: 10px 0; border-top: 2px solid rgba(26,26,26,0.1); display: flex; gap: 10px; align-items: center; font-weight: 600; }
+        .price-card li::before { content: ''; width: 16px; height: 16px; background: var(--green); border: 2px solid var(--ink); border-radius: 4px; flex-shrink: 0; }
+        .price-card.featured li::before { background: var(--paper); }
+
+        /* CLAUDE PRO HIGHLIGHT */
+        .claude-highlight { background: var(--purple); color: white; border: 3px solid var(--ink); border-radius: 24px; padding: 40px 32px; max-width: 900px; margin: 0 auto; box-shadow: 0 10px 0 var(--ink); position: relative; }
+        .claude-studs { display: flex; gap: 12px; position: absolute; top: -12px; left: 32px; }
+        .claude-studs span { width: 24px; height: 24px; border-radius: 50%; background: var(--purple); border: 3px solid var(--ink); }
+        .claude-inner { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
+        @media (min-width: 800px) { .claude-inner { grid-template-columns: 1fr auto; } }
+        .claude-text h3 { font-family: var(--display); font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.05; margin-bottom: 10px; }
+        .claude-text p { font-size: 16px; opacity: 0.95; line-height: 1.55; font-weight: 500; }
+        .claude-badge { background: var(--yellow); color: var(--ink); border: 2.5px solid var(--ink); border-radius: 14px; padding: 16px 20px; font-family: var(--display); font-weight: 700; font-size: 14px; box-shadow: 0 5px 0 var(--ink); text-align: center; min-width: 180px; }
+        .claude-badge .big { display: block; font-size: 22px; margin-bottom: 4px; }
+
+        /* INTAKE FORM */
+        .form-wrap { max-width: 720px; margin: 0 auto; }
+        .form-card { background: var(--paper); border: 3px solid var(--ink); border-radius: 24px; padding: 40px 36px; box-shadow: 0 10px 0 var(--ink); position: relative; }
+        @media (max-width: 600px) { .form-card { padding: 32px 22px; } }
+        .form-studs { display: flex; gap: 12px; position: absolute; top: -12px; left: 32px; }
+        .form-studs span { width: 24px; height: 24px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); }
+        .form-row { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; }
+        @media (min-width: 600px) { .form-row.two { grid-template-columns: 1fr 1fr; } }
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        .field label { font-family: var(--display); font-weight: 600; font-size: 14px; }
+        .field label .req { color: var(--red); margin-left: 2px; }
+        .field input, .field select, .field textarea { width: 100%; padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 12px; font-family: var(--body); font-size: 15px; font-weight: 600; background: white; color: var(--ink); transition: all 0.12s; box-shadow: 0 3px 0 var(--ink); }
+        .field input:focus, .field select:focus, .field textarea:focus { outline: none; transform: translateY(-2px); box-shadow: 0 5px 0 var(--ink); background: #fffef5; }
+        .field textarea { resize: vertical; min-height: 90px; font-family: var(--body); }
+        .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%231a1a1a' stroke-width='2' fill='none' stroke-linecap='round'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+        .field-hint { font-size: 13px; color: var(--ink-soft); opacity: 0.75; font-weight: 500; }
+        .form-submit { margin-top: 12px; text-align: center; }
+        .form-note { text-align: center; margin-top: 18px; font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+        .form-success { display: none; text-align: center; padding: 32px 24px; }
+        .form-success.show { display: block; }
+        .form-success.show ~ form { display: none; }
+        .success-icon { width: 64px; height: 64px; background: var(--green); border: 3px solid var(--ink); border-radius: 16px; box-shadow: 0 5px 0 var(--ink); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; font-family: var(--display); font-weight: 700; font-size: 32px; color: var(--ink); }
+        .form-success h3 { font-family: var(--display); font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .form-success p { font-size: 16px; color: var(--ink-soft); line-height: 1.55; }
+
+        /* FAQ */
+        .faq-list { max-width: 720px; margin: 0 auto; }
+        .faq-item { background: var(--paper); border: 2.5px solid var(--ink); border-radius: 14px; margin-bottom: 14px; box-shadow: 0 5px 0 var(--ink); overflow: hidden; transition: all 0.15s; }
+        .faq-q { width: 100%; background: none; border: none; padding: 20px 22px; text-align: left; font-family: var(--display); font-size: 17px; font-weight: 600; color: var(--ink); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .faq-icon { width: 28px; height: 28px; background: var(--yellow); border: 2px solid var(--ink); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: transform 0.2s; flex-shrink: 0; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--red); color: white; }
+        .faq-a { font-size: 15px; color: var(--ink-soft); line-height: 1.65; padding: 0 22px 22px; display: none; font-weight: 500; }
+        .faq-item.open .faq-a { display: block; }
+
+        .footer { border-top: 3px solid var(--ink); padding: 36px 0; background: var(--paper); position: relative; z-index: 1; }
+        .footer-inner { max-width: 1180px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-copy { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+        .footer-links a:hover { color: var(--ink); }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.in { opacity: 1; transform: none; }
+        .reveal.d1 { transition-delay: 0.08s; } .reveal.d2 { transition-delay: 0.16s; } .reveal.d3 { transition-delay: 0.24s; }
+    </style>
+</head>
+<body>
+
+    <div class="brick-rain" aria-hidden="true">
+        <svg class="fall fall-1" width="64" height="46" viewBox="0 0 120 80"><rect x="3" y="20" width="114" height="58" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3"/><circle cx="60" cy="20" r="9" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3"/><circle cx="98" cy="20" r="9" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-2" width="74" height="52" viewBox="0 0 120 80"><rect x="3" y="20" width="114" height="58" fill="#4a90e2" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#4a90e2" stroke="#1a1a1a" stroke-width="3"/><circle cx="60" cy="20" r="9" fill="#4a90e2" stroke="#1a1a1a" stroke-width="3"/><circle cx="98" cy="20" r="9" fill="#4a90e2" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-3" width="58" height="42" viewBox="0 0 80 80"><rect x="3" y="20" width="74" height="58" fill="#58c93c" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#58c93c" stroke="#1a1a1a" stroke-width="3"/><circle cx="58" cy="20" r="9" fill="#58c93c" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-4" width="68" height="48" viewBox="0 0 120 80"><rect x="3" y="20" width="114" height="58" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/><circle cx="60" cy="20" r="9" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/><circle cx="98" cy="20" r="9" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-5" width="54" height="38" viewBox="0 0 80 80"><rect x="3" y="20" width="74" height="58" fill="#b06ce6" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#b06ce6" stroke="#1a1a1a" stroke-width="3"/><circle cx="58" cy="20" r="9" fill="#b06ce6" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-6" width="70" height="50" viewBox="0 0 120 80"><rect x="3" y="20" width="114" height="58" fill="#58c93c" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#58c93c" stroke="#1a1a1a" stroke-width="3"/><circle cx="60" cy="20" r="9" fill="#58c93c" stroke="#1a1a1a" stroke-width="3"/><circle cx="98" cy="20" r="9" fill="#58c93c" stroke="#1a1a1a" stroke-width="3"/></svg>
+        <svg class="fall fall-7" width="60" height="42" viewBox="0 0 80 80"><rect x="3" y="20" width="74" height="58" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3" rx="6"/><circle cx="22" cy="20" r="9" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/><circle cx="58" cy="20" r="9" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/></svg>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo"><span class="logo-block"></span>Basecamp</a>
+            <div class="nav-links">
+                <a href="program.html">Program</a>
+                <a href="curriculum.html">Curriculum</a>
+                <a href="team.html">Team</a>
+                <a href="enroll.html" class="nav-cta active">Enroll</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <p class="tag reveal"><span class="pulse"></span>40 OF 40 SPOTS OPEN · STARTS JUNE 20</p>
+            <h1 class="reveal d1">Enroll <span class="pop">now</span>.</h1>
+            <p class="reveal d2">Summer 2026 cohort. 40 spots. Frisco, TX. Fill out the form and we'll be in touch within 48 hours.</p>
+        </div>
+    </section>
+
+    <!-- CLAUDE CODE HIGHLIGHT -->
+    <section class="section">
+        <div class="container">
+            <div class="claude-highlight reveal">
+                <div class="claude-studs"><span></span><span></span><span></span><span></span></div>
+                <div class="claude-inner">
+                    <div class="claude-text">
+                        <h3>Every student gets Claude Code Pro.</h3>
+                        <p>We provide the Pro plan for the full six weeks — included with enrollment. Learning to code with an AI pair-programmer is one of the core skills your kid will walk away with. It's how real engineers work in 2026.</p>
+                    </div>
+                    <div class="claude-badge">
+                        <span class="big">$0</span>
+                        Pro plan · included
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-eyebrow y">Pricing</span>
+                <h2 class="section-title">Two prices. No tiers.</h2>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card featured reveal">
+                    <div class="price-studs"><span></span><span></span><span></span></div>
+                    <p class="price-tag">EARLY BIRD <span class="price-badge">SAVE $50</span></p>
+                    <p class="price-amt">$249</p>
+                    <p class="price-per">per student · ends June 1</p>
+                    <ul>
+                        <li>Full 6-week program</li>
+                        <li>All three tracks</li>
+                        <li>Claude Code Pro included</li>
+                        <li>1:4 mentor ratio</li>
+                        <li>Demo Day included</li>
+                        <li>Deployed portfolio</li>
+                    </ul>
+                </div>
+                <div class="price-card reveal d1">
+                    <div class="price-studs"><span></span><span></span><span></span></div>
+                    <p class="price-tag">STANDARD</p>
+                    <p class="price-amt">$299</p>
+                    <p class="price-per">per student</p>
+                    <ul>
+                        <li>Full 6-week program</li>
+                        <li>All three tracks</li>
+                        <li>Claude Code Pro included</li>
+                        <li>1:4 mentor ratio</li>
+                        <li>Demo Day included</li>
+                        <li>Deployed portfolio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTAKE FORM -->
+    <section class="section" id="apply">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-eyebrow g">Apply</span>
+                <h2 class="section-title">Fill this out.</h2>
+                <p class="section-desc">Takes about two minutes. We'll email you back within 48 hours to confirm placement.</p>
+            </div>
+            <div class="form-wrap reveal">
+                <div class="form-card">
+                    <div class="form-studs"><span></span><span></span><span></span><span></span><span></span></div>
+
+                    <div class="form-success" id="formSuccess">
+                        <div class="success-icon">OK</div>
+                        <h3>Your email client is opening.</h3>
+                        <p>Just hit <strong>Send</strong> in your mail app to submit your application. We'll reply within 48 hours.</p>
+                    </div>
+
+                    <form id="enrollForm" onsubmit="return submitEnroll(event)">
+                        <div class="form-row two">
+                            <div class="field">
+                                <label>Student's name <span class="req">*</span></label>
+                                <input name="studentName" type="text" required placeholder="First and last">
+                            </div>
+                            <div class="field">
+                                <label>Student's age <span class="req">*</span></label>
+                                <input name="studentAge" type="number" min="8" max="14" required placeholder="8 – 14">
+                            </div>
+                        </div>
+
+                        <div class="form-row two">
+                            <div class="field">
+                                <label>Parent / guardian name <span class="req">*</span></label>
+                                <input name="parentName" type="text" required placeholder="Your name">
+                            </div>
+                            <div class="field">
+                                <label>Parent email <span class="req">*</span></label>
+                                <input name="parentEmail" type="email" required placeholder="you@example.com">
+                            </div>
+                        </div>
+
+                        <div class="form-row two">
+                            <div class="field">
+                                <label>Parent phone</label>
+                                <input name="parentPhone" type="tel" placeholder="(optional)">
+                            </div>
+                            <div class="field">
+                                <label>Track preference</label>
+                                <select name="track">
+                                    <option value="Not sure — help me pick">Not sure — help me pick</option>
+                                    <option value="Explorer (8–10)">Explorer (8–10)</option>
+                                    <option value="Builder (10–12)">Builder (10–12)</option>
+                                    <option value="Creator (12–14)">Creator (12–14)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field">
+                                <label>Coding experience <span class="req">*</span></label>
+                                <select name="experience" required>
+                                    <option value="No experience">No experience at all</option>
+                                    <option value="A little (Scratch, simple stuff)">A little (Scratch, simple stuff)</option>
+                                    <option value="Some Python or HTML">Some Python or HTML</option>
+                                    <option value="Comfortable coding">Comfortable coding</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field">
+                                <label>Why is your kid interested?</label>
+                                <textarea name="why" placeholder="What pulls them toward this? Anything specific they want to build?"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field">
+                                <label>Anything else?</label>
+                                <textarea name="notes" placeholder="Schedule notes, accessibility needs, questions for us, etc."></textarea>
+                                <span class="field-hint">Optional — but the more we know, the better we can place your kid.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-yellow btn-large">Submit application →</button>
+                        </div>
+                        <p class="form-note">This opens your email app pre-filled. Your data goes straight to <strong>dhruvhydrox@gmail.com</strong>.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-eyebrow b">FAQ</span>
+                <h2 class="section-title">Questions, answered.</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item reveal"><button class="faq-q" type="button">Does my kid need coding experience?<span class="faq-icon">+</span></button><div class="faq-a">No. Explorer is built for total beginners. We'll place your kid in the right track after a short chat.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">What does my kid need to bring?<span class="faq-icon">+</span></button><div class="faq-a">A laptop. Mac, Windows, or Linux — all fine. No laptop? Tell us in the form and we'll figure something out.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">What's Claude Code Pro and why is it included?<span class="faq-icon">+</span></button><div class="faq-a">Claude Code Pro is Anthropic's professional AI pair-programmer. Real engineers use it daily. We pay for every student's Pro plan during the program — learning to code alongside an AI is one of the core skills they'll leave with.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">When does the cohort start?<span class="faq-icon">+</span></button><div class="faq-a">Summer 2026 cohort starts <strong>June 20, 2026</strong>. Two sessions per week, two hours each, for six weeks straight.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">Where are sessions held?<span class="faq-icon">+</span></button><div class="faq-a">In-person in Frisco, TX. Exact venue confirmed once the cohort fills.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">What happens after?<span class="faq-icon">+</span></button><div class="faq-a">Your kid keeps everything: the deployed app, GitHub repo, and the code. Plus access to the alumni community for help and connections later.</div></div>
+                <div class="faq-item reveal"><button class="faq-q" type="button">Refund policy?<span class="faq-icon">+</span></button><div class="faq-a">Full refund up to one week before start. Prorated after. If it isn't working, tell us and we'll fix it.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <p class="footer-copy">© Basecamp 2026 · Frisco, TX</p>
+            <div class="footer-links">
+                <a href="program.html">Program</a><a href="curriculum.html">Curriculum</a><a href="team.html">Team</a><a href="enroll.html">Enroll</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    /* INTAKE FORM → mailto: dhruvhydrox@gmail.com */
+    function submitEnroll(e) {
+        e.preventDefault();
+        const f = e.target;
+        const d = new FormData(f);
+        const lines = [
+            'BASECAMP ENROLLMENT APPLICATION',
+            '═══════════════════════════════════',
+            '',
+            'STUDENT',
+            '  Name:        ' + (d.get('studentName') || ''),
+            '  Age:         ' + (d.get('studentAge') || ''),
+            '',
+            'PARENT / GUARDIAN',
+            '  Name:        ' + (d.get('parentName') || ''),
+            '  Email:       ' + (d.get('parentEmail') || ''),
+            '  Phone:       ' + (d.get('parentPhone') || '(not provided)'),
+            '',
+            'PROGRAM',
+            '  Track:       ' + (d.get('track') || 'Not sure'),
+            '  Experience:  ' + (d.get('experience') || ''),
+            '',
+            'WHY INTERESTED',
+            (d.get('why') || '(not provided)'),
+            '',
+            'ADDITIONAL NOTES',
+            (d.get('notes') || '(none)'),
+            '',
+            '═══════════════════════════════════',
+            'Submitted from basecamp.example/enroll',
+        ];
+        const body = lines.join('\n');
+        const subject = 'Basecamp Application — ' + (d.get('studentName') || 'New Student');
+        const mailto = 'mailto:dhruvhydrox@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        window.location.href = mailto;
+        document.getElementById('formSuccess').classList.add('show');
+        return false;
+    }
+
+    /* FAQ */
+    document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+        const i = b.parentElement;
+        const was = i.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(x => x.classList.remove('open'));
+        if (!was) i.classList.add('open');
+    }));
+
+    /* Reveal */
+    const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+</html>
