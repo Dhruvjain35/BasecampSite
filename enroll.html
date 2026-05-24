@@ -289,12 +289,7 @@
                         <p>We've received your application and will reply within 48 hours.</p>
                     </div>
 
-                    <form id="enrollForm" action="https://formsubmit.co/dhruvhydrox@gmail.com" method="POST">
-                        <input type="hidden" name="_subject" value="Basecamp Application - New Student">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="text" name="_honey" style="display:none">
-                        <input type="hidden" name="_next" id="formNext">
+                    <form id="enrollForm">
                         <div class="form-row two">
                             <div class="field">
                                 <label>Student's name <span class="req">*</span></label>
@@ -398,18 +393,30 @@
     </footer>
 
     <script>
-    /* INTAKE FORM → FormSubmit.co → dhruvhydrox@gmail.com */
-    document.getElementById('formNext').value = window.location.href + '?submitted=true';
-    // Update subject dynamically before submit
-    document.getElementById('enrollForm').addEventListener('submit', function() {
-        const name = this.querySelector('[name="studentName"]').value || 'New Student';
-        this.querySelector('[name="_subject"]').value = 'Basecamp Application - ' + name;
+    /* INTAKE FORM → Google Apps Script → dhruvhydrox@gmail.com */
+    var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnUb91Cn4H2cdhQ6ME-rOgMg9VU2YGjOAe2VMydeug-zIo3BGhWksMTxlxW4acdjGkVw/exec';
+    document.getElementById('enrollForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var f = this;
+        var btn = f.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+        var data = {};
+        new FormData(f).forEach(function(v, k) { data[k] = v; });
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(function() {
+            f.style.display = 'none';
+            document.getElementById('formSuccess').classList.add('show');
+        }).catch(function() {
+            btn.disabled = false;
+            btn.textContent = 'Submit application →';
+            alert('Something went wrong. Please try again.');
+        });
     });
-    // Show success if redirected back after submission
-    if (window.location.search.includes('submitted=true')) {
-        document.getElementById('enrollForm').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-    }
 
     /* FAQ */
     document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
