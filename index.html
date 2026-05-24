@@ -61,11 +61,10 @@
         .nav { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: var(--border); }
         .nav-inner { max-width: 1180px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { font-family: var(--display); font-size: 22px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 10px; }
-        .logo-block { width: 28px; height: 28px; background: var(--red); border: 2.5px solid var(--ink); border-radius: 6px; position: relative; }
-        .logo-block::before, .logo-block::after { content: ''; position: absolute; top: -5px; width: 7px; height: 7px; border-radius: 50%; background: var(--red); border: 2px solid var(--ink); }
-        .logo-block::before { left: 4px; } .logo-block::after { right: 4px; }
+        .logo-svg { flex-shrink: 0; filter: drop-shadow(0 2px 0 var(--ink)); }
         .nav-links { display: none; gap: 8px; align-items: center; }
-        @media (min-width: 768px) { .nav-links { display: flex; } }
+        @media (min-width: 768px) {         .logo-svg { flex-shrink: 0; filter: drop-shadow(0 2px 0 var(--ink)); }
+        .nav-links { display: flex; } }
         .nav-links a { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--ink); padding: 8px 16px; border-radius: 10px; transition: background 0.15s; }
         .nav-links a:hover { background: var(--cream-2); }
         .nav-cta { background: var(--yellow) !important; border: 2.5px solid var(--ink); box-shadow: 0 3px 0 var(--ink); padding: 8px 18px !important; transition: all 0.12s !important; }
@@ -218,7 +217,20 @@
     <!-- NAV -->
     <nav class="nav">
         <div class="nav-inner">
-            <a href="index.html" class="nav-logo"><span class="logo-block"></span>Basecamp</a>
+            <a href="index.html" class="nav-logo"><svg class="logo-svg" width="32" height="34" viewBox="0 0 64 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottom brick (blue, wide) -->
+  <rect x="2" y="44" width="60" height="22" rx="4" fill="#4a90e2" stroke="#1a1a1a" stroke-width="3"/>
+  <circle cx="18" cy="44" r="5" fill="#4a90e2" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="46" cy="44" r="5" fill="#4a90e2" stroke="#1a1a1a" stroke-width="2.5"/>
+  <!-- Middle brick (yellow, offset right) -->
+  <rect x="14" y="24" width="48" height="22" rx="4" fill="#ffd23f" stroke="#1a1a1a" stroke-width="3"/>
+  <circle cx="30" cy="24" r="5" fill="#ffd23f" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="50" cy="24" r="5" fill="#ffd23f" stroke="#1a1a1a" stroke-width="2.5"/>
+  <!-- Top brick (red, offset left) -->
+  <rect x="2" y="4" width="44" height="22" rx="4" fill="#ef3e36" stroke="#1a1a1a" stroke-width="3"/>
+  <circle cx="16" cy="4" r="5" fill="#ef3e36" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="36" cy="4" r="5" fill="#ef3e36" stroke="#1a1a1a" stroke-width="2.5"/>
+</svg>Basecamp</a>
             <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
             <div class="nav-links">
                 <a href="program.html">Program</a>
